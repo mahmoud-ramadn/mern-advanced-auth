@@ -3,8 +3,8 @@ import axios from "axios";
 
 const API_URL =
   import.meta.env.MODE === "development"
-    ? "http://localhost:5000/api/auth"
-    : "/api/auth";
+    ? "https://mern-advanced-auth-production.up.railway.app/api/auth"
+    : "https://mern-advanced-auth-production.up.railway.app/api/auth";
 
 axios.defaults.withCredentials = true;
 
