@@ -5,14 +5,14 @@ import { useAuthStore } from "../store/authStore";
 import toast from "react-hot-toast";
 
 const EmailVerificationPage = () => {
-  const [verificationToken, setVerificationToken] = useState(["", "", "", "", "", ""]);
+  const [code, setCode] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef([]);
   const navigate = useNavigate();
 
   const { error, isLoading, verifyEmail } = useAuthStore();
 
   const handleChange = (index, value) => {
-    const newCode = [...verificationToken];
+    const newCode = [...code];
 
     // Handle pasted content
     if (value.length > 1) {
@@ -20,7 +20,7 @@ const EmailVerificationPage = () => {
       for (let i = 0; i < 6; i++) {
         newCode[i] = pastedCode[i] || "";
       }
-      setVerificationToken(newCode); 
+      setCode(newCode);
 
       // Focus on the last non-empty input or the first empty one
       const lastFilledIndex = newCode.findLastIndex((digit) => digit !== "");
@@ -28,7 +28,7 @@ const EmailVerificationPage = () => {
       inputRefs.current[focusIndex].focus();
     } else {
       newCode[index] = value;
-      setVerificationToken(newCode); 
+      setCode(newCode);
 
       // Move focus to the next input field if value is entered
       if (value && index < 5) {
@@ -38,14 +38,14 @@ const EmailVerificationPage = () => {
   };
 
   const handleKeyDown = (index, e) => {
-    if (e.key === "Backspace" && !verificationToken[index] && index > 0) {
+    if (e.key === "Backspace" && !code[index] && index > 0) {
       inputRefs.current[index - 1].focus();
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const verificationCode = verificationToken.join("");
+    const verificationCode = code.join("");
     try {
       await verifyEmail(verificationCode);
       navigate("/");
@@ -57,12 +57,10 @@ const EmailVerificationPage = () => {
 
   // Auto submit when all fields are filled
   useEffect(() => {
-    if (verificationToken.every((digit) => digit !== "")) {
+    if (code.every((digit) => digit !== "")) {
       handleSubmit(new Event("submit"));
-      console.log(verificationToken);
-      
     }
-  }, [verificationToken]);
+  }, [code]);
 
   return (
     <div className="max-w-md w-full bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden">
@@ -81,7 +79,7 @@ const EmailVerificationPage = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex justify-between">
-            {verificationToken.map((digit, index) => (
+            {code.map((digit, index) => (
               <input
                 key={index}
                 ref={(el) => (inputRefs.current[index] = el)}
@@ -99,7 +97,7 @@ const EmailVerificationPage = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             type="submit"
-            disabled={isLoading || verificationToken.some((digit) => !digit)}
+            disabled={isLoading || code.some((digit) => !digit)}
             className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 disabled:opacity-50"
           >
             {isLoading ? "Verifying..." : "Verify Email"}
