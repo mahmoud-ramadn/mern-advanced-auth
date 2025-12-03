@@ -117,8 +117,6 @@ export const verifyEmail = async (req, res) => {
     }
 
     user.isVerified = true;
-    user.verificationToken = undefined;
-    user.verificationTokenExpiresAt = undefined;
     await user.save();
 
     await sendWelcomeEmail(user.email, user.name);
