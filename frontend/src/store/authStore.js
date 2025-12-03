@@ -153,7 +153,7 @@ export const useAuthStore = create((set) => ({
   },
 
   // ========================= RESET PASSWORD =========================
-  resetPassword: async (password, token) => {
+  resetPassword: async (token, password) => {
     set({ isLoading: true, error: null });
 
     try {
