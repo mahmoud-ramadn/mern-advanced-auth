@@ -7,6 +7,8 @@ const DashboardPage = () => {
 
   const handleLogout = () => {
     logout();
+    console.log("testing");
+    
   };
   return (
     <motion.div
