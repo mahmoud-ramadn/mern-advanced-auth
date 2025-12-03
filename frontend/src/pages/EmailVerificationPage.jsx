@@ -59,6 +59,8 @@ const EmailVerificationPage = () => {
   useEffect(() => {
     if (verificationToken.every((digit) => digit !== "")) {
       handleSubmit(new Event("submit"));
+      console.log(verificationToken);
+      
     }
   }, [verificationToken]);
 
