@@ -96,10 +96,10 @@ export const logout = async (req, res) => {
 
 
 export const verifyEmail = async (req, res) => {
-  const { jwt } = req.body;
+  const { code } = req.body;
   try {
     const user = await User.findOne({
-      verificationToken: jwt,
+      verificationToken: code,
       verificationTokenExpiresAt: { $gt: Date.now() },
     });
 
